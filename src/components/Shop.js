@@ -145,7 +145,7 @@ Shop.propTypes = {
  */
 function CardGenerate(props) {
   const { classes } = props;
-
+  // FIXME: 小螢幕時商品排版無法改變排版大小
   return (
     cards.map(card => (
       <Grid item key={card} sm={6} md={4} lg={3}>

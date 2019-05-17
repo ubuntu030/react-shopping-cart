@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes, { func } from 'prop-types';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
@@ -63,8 +63,6 @@ const styles = theme => ({
   },
 });
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-
 class Shop extends React.Component {
   constructor(props) {
     super(props);
@@ -76,7 +74,6 @@ class Shop extends React.Component {
 
   componentDidMount() {
     const self = this;
-    // TODO: splash api 回傳回來在更新商品
     fetchPhoto().then(data => {
       self.setState({
         products: formatPhotosData(data)
@@ -186,7 +183,6 @@ function CardGenerate(props) {
     ))
   );
 }
-
 /**
  * 取得照片
  * @return {Promise}

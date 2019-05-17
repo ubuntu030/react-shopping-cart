@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
 import Unsplash from './Unsplash';
+import FullScreenDialog from './FullScreenDialog';
 
 const styles = theme => ({
   appBar: {
@@ -68,8 +69,11 @@ class Shop extends React.Component {
     super(props);
     this.state = {
       cart: [],
-      products: []
+      products: [],
+      open: false
     }
+    this.handleDetailClick = this.handleDetailClick.bind(this);
+    this.handleCloseEvent = this.handleCloseEvent.bind(this);
   }
 
   componentDidMount() {
@@ -80,6 +84,18 @@ class Shop extends React.Component {
       })
     });
     // TODO: loading 效果
+  }
+  // 點擊查看時開啟 Dialog
+  handleDetailClick() {
+    this.setState({
+      open: true
+    })
+  }
+  // 關閉 Dialog 事件
+  handleCloseEvent() {
+    this.setState({
+      open: false
+    });
   }
 
   render() {
@@ -124,7 +140,11 @@ class Shop extends React.Component {
             {/* End hero unit */}
             <Grid container spacing={40}>
               {/* TODO: loding 效果 */}
-              <CardGenerate products={this.state.products} classes={classes} />
+              <CardGenerate
+                products={this.state.products}
+                onDetailClick={this.handleDetailClick}
+                classes={classes}
+              />
             </Grid>
           </div>
         </main>
@@ -138,6 +158,10 @@ class Shop extends React.Component {
           </Typography>
         </footer>
         {/* End footer */}
+        <FullScreenDialog
+          open={this.state.open}
+          onCloseEvent={this.handleCloseEvent}
+        />
       </React.Fragment>
     )
   }
@@ -152,7 +176,7 @@ Shop.propTypes = {
  * @param {Object} props 
  */
 function CardGenerate(props) {
-  const { products, classes } = props;
+  const { products, classes, onDetailClick, onCloseEvent } = props;
   return (
     products.map(item => (
       <Grid item key={item.id} xs={12} sm={6} md={4} lg={3}>
@@ -171,7 +195,7 @@ function CardGenerate(props) {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small" color="primary">
+            <Button size="small" color="primary" onClick={onDetailClick}>
               查看
             </Button>
             <Button size="small" color="primary">

@@ -70,7 +70,8 @@ class Shop extends React.Component {
     this.state = {
       cart: [],
       products: [],
-      open: false
+      open: false,
+      currentItem: {}
     }
     this.handleDetailClick = this.handleDetailClick.bind(this);
     this.handleCloseEvent = this.handleCloseEvent.bind(this);
@@ -86,9 +87,12 @@ class Shop extends React.Component {
     // TODO: loading 效果
   }
   // 點擊查看時開啟 Dialog
-  handleDetailClick() {
+  handleDetailClick(item) {
+    console.log(item);
+
     this.setState({
-      open: true
+      open: true,
+      currentItem: item
     })
   }
   // 關閉 Dialog 事件
@@ -160,6 +164,7 @@ class Shop extends React.Component {
         {/* End footer */}
         <FullScreenDialog
           open={this.state.open}
+          currentItem={this.state.currentItem}
           onCloseEvent={this.handleCloseEvent}
         />
       </React.Fragment>
@@ -176,7 +181,8 @@ Shop.propTypes = {
  * @param {Object} props 
  */
 function CardGenerate(props) {
-  const { products, classes, onDetailClick, onCloseEvent } = props;
+  const { products, classes, onDetailClick } = props;
+
   return (
     products.map(item => (
       <Grid item key={item.id} xs={12} sm={6} md={4} lg={3}>
@@ -195,7 +201,7 @@ function CardGenerate(props) {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small" color="primary" onClick={onDetailClick}>
+            <Button size="small" color="primary" onClick={onDetailClick.bind(this, item)}>
               查看
             </Button>
             <Button size="small" color="primary">

@@ -1,12 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItem from '@material-ui/core/ListItem';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -21,6 +16,9 @@ const styles = {
   flex: {
     flex: 1,
   },
+  image: {
+    width: '100%'
+  }
 };
 
 function Transition(props) {
@@ -29,39 +27,29 @@ function Transition(props) {
 
 class FullScreenDialog extends React.Component {
   render() {
-    const { classes, img, open = false, onCloseEvent } = this.props;
+    const { classes, currentItem, open = false, onCloseEvent } = this.props;
+    const { alt_description, img } = currentItem;
     return (
-      <div>
-        <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-          Open full-screen dialog
-        </Button>
-        <Dialog
-          fullScreen
-          open={open}
-          onClose={this.handleClose}
-          TransitionComponent={Transition}
-        >
-          <AppBar className={classes.appBar}>
-            <Toolbar>
-              <IconButton color="inherit" onClick={onCloseEvent} aria-label="Close">
-                <CloseIcon />
-              </IconButton>
-              <Typography variant="h6" color="inherit" className={classes.flex}>
-                Dialog
+      <Dialog
+        fullScreen
+        open={open}
+        onClose={this.handleClose}
+        TransitionComponent={Transition}
+      >
+        <AppBar className={classes.appBar}>
+          <Toolbar>
+            <IconButton color="inherit" onClick={onCloseEvent} aria-label="Close">
+              <CloseIcon />
+            </IconButton>
+            <Typography variant="h6" color="inherit" className={classes.flex}>
+              Dialog
               </Typography>
-            </Toolbar>
-          </AppBar>
-          <List>
-            <ListItem button>
-              <ListItemText primary="Phone ringtone" secondary="Titania" />
-            </ListItem>
-            <Divider />
-            <ListItem button>
-              <ListItemText primary="Default notification ringtone" secondary="Tethys" />
-            </ListItem>
-          </List>
-        </Dialog>
-      </div>
+          </Toolbar>
+        </AppBar>
+        <div>
+          <img alt={alt_description} src={img} className={classes.image}></img>
+        </div>
+      </Dialog>
     );
   }
 }

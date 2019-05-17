@@ -13,6 +13,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
+import Unsplash from './Unsplash';
+
 const styles = theme => ({
   appBar: {
     position: 'relative',
@@ -66,10 +68,20 @@ const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 class Shop extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      cart: [],
+      products: []
+    }
   }
 
   componentDidMount() {
+    const self = this;
     // TODO: splash api 回傳回來在更新商品
+    fetchPhoto().then(data => {
+      self.setState({
+        products: formatPhotosData(data)
+      })
+    });
     // TODO: loading 效果
   }
 
@@ -114,7 +126,6 @@ class Shop extends React.Component {
           <div className={classNames(classes.layout, classes.cardGrid)}>
             {/* End hero unit */}
             <Grid container spacing={40}>
-              {/* 建立商品 */}
               {/* TODO: loding 效果 */}
               <CardGenerate classes={classes} />
             </Grid>
@@ -174,6 +185,35 @@ function CardGenerate(props) {
       </Grid>
     ))
   );
+}
+
+/**
+ * 取得照片
+ */
+function fetchPhoto() {
+  return Unsplash.photos.getRandomPhoto({ count: 12, query: 'nature', width: '800', height: '600' })
+    .then(rep => rep.json())
+    .then(json => {
+      console.log('[fetchPhoto] ', json);
+      return json;
+    })
+    .catch(error => {
+      console.error(error)
+      return error;
+    });
+}
+/**
+ * 將需要的資料整理成一綑
+ * @param {Object} photoData fetchPhotos 回來的資料 
+ */
+function formatPhotosData(photoData) {
+  const data = [...photoData];
+  const nData = data.map(data => {
+    const { id, exif, alt_description, urls: { regular: img } } = data;
+    return { id, img, exif, alt_description }
+  });
+  console.log('[formatPhotos] ', nData);
+  return nData;
 }
 
 export default withStyles(styles)(Shop);

@@ -24,7 +24,7 @@ const styles = {
 function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
-
+// TODO: 設計成 Render Props 使用在"查看全圖"、"購物車清單"
 class FullScreenDialog extends React.Component {
   render() {
     const { classes, currentItem, open = false, onCloseEvent } = this.props;

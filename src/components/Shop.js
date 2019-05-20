@@ -202,6 +202,7 @@ Shop.propTypes = {
 /**
  * 生成商品項目
  * @param {Object} props 
+ * @return {Component}
  */
 function CardGenerate(props) {
   // TODO: 優化: products、cart 共用
@@ -229,7 +230,7 @@ function CardGenerate(props) {
               查看
             </Button>true
             <Button size="small" color="primary" disabled={cart.includes(item.id)} onClick={onAddCartClick.bind(this, item.id)}>
-              加入商品
+              加入相簿
             </Button>
           </CardActions>
         </Card>

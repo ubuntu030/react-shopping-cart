@@ -78,7 +78,6 @@ class Shop extends React.Component {
       open: false,
       currentItem: {}
     }
-    this.productsIdMap = {};
     this.handleDetailClick = this.handleDetailClick.bind(this);
     this.handleCloseEvent = this.handleCloseEvent.bind(this);
     this.handleAddCartClick = this.handleAddCartClick.bind(this);
@@ -87,10 +86,8 @@ class Shop extends React.Component {
   componentDidMount() {
     const self = this;
     fetchPhoto().then(data => {
-      const formatData = formatPhotosData(data);
-      this.productsIdMap = formatData.idMapData;
       self.setState({
-        products: formatData.data
+        products: formatPhotosData(data)
       });
     });
     // TODO: loading 效果
@@ -209,9 +206,9 @@ Shop.propTypes = {
 function CardGenerate(props) {
   // TODO: 優化: products、cart 共用
   const { products, cart, classes, onDetailClick, onAddCartClick } = props;
-
+  const productArr = Object.values(products);
   return (
-    products.map(item => (
+    productArr.map(item => (
       <Grid item key={item.id} xs={12} sm={6} md={4} lg={3}>
         <Card className={classes.card}>
           <CardMedia
@@ -264,15 +261,13 @@ function fetchPhoto() {
 function formatPhotosData(photoData) {
   const data = [...photoData];
   const idMap = {};
-  const nData = data.map(data => {
+  data.forEach(data => {
     const { id, exif, alt_description, urls: { regular: img }, user: { name } } = data;
-
-    idMap[id] = data;
-    return { id, name, img, exif, alt_description }
+    // 將資料整理成鍵值對
+    idMap[id] = { id, name, img, exif, alt_description };
   });
-  console.log('[formatPhotos] ', nData);
-  console.log('[idMap] ', idMap);
-  return { data: nData, idMapData: idMap };
+  console.log('[formatPhotosData] ', idMap);
+  return idMap;
 }
 
 export default withStyles(styles)(Shop);

@@ -12,6 +12,8 @@ import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import { Badge, IconButton } from '@material-ui/core';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 import Unsplash from './Unsplash';
 import FullScreenDialog from './FullScreenDialog';
@@ -44,6 +46,9 @@ const styles = theme => ({
       marginRight: 'auto',
     },
   },
+  flexGrow: {
+    flexGrow: 1
+  },
   cardGrid: {
     padding: `${theme.spacing.unit * 8}px 0`,
   },
@@ -73,16 +78,20 @@ class Shop extends React.Component {
       open: false,
       currentItem: {}
     }
+    this.productsIdMap = {};
     this.handleDetailClick = this.handleDetailClick.bind(this);
     this.handleCloseEvent = this.handleCloseEvent.bind(this);
+    this.handleAddCartClick = this.handleAddCartClick.bind(this);
   }
 
   componentDidMount() {
     const self = this;
     fetchPhoto().then(data => {
+      const formatData = formatPhotosData(data);
+      this.productsIdMap = formatData.idMapData;
       self.setState({
-        products: formatPhotosData(data)
-      })
+        products: formatData.data
+      });
     });
     // TODO: loading 效果
   }
@@ -101,6 +110,16 @@ class Shop extends React.Component {
       open: false
     });
   }
+  // 加入購物車按鈕處理
+  handleAddCartClick(itemId) {
+    // 避免重複加入，同樣商品
+    if(this.state.cart.includes(itemId)) {
+      return;
+    }
+    this.setState(state => ({
+      cart: state.cart.concat(itemId)
+    }));
+  }
 
   render() {
     const { classes } = this.props;
@@ -109,9 +128,14 @@ class Shop extends React.Component {
         <CssBaseline />
         <AppBar position="static" className={classes.appBar}>
           <Toolbar>
-            <Typography variant="h6" color="inherit" noWrap>
+            <Typography variant="h6" color="inherit" noWrap className={classes.flexGrow}>
               Shopping Cart
             </Typography>
+            <IconButton color="inherit">
+              <Badge badgeContent={this.state.cart.length} color="secondary">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
           </Toolbar>
         </AppBar>
         <main>
@@ -147,6 +171,7 @@ class Shop extends React.Component {
               <CardGenerate
                 products={this.state.products}
                 onDetailClick={this.handleDetailClick}
+                onAddCartClick={this.handleAddCartClick}
                 classes={classes}
               />
             </Grid>
@@ -181,7 +206,7 @@ Shop.propTypes = {
  * @param {Object} props 
  */
 function CardGenerate(props) {
-  const { products, classes, onDetailClick } = props;
+  const { products, classes, onDetailClick, onAddCartClick } = props;
 
   return (
     products.map(item => (
@@ -204,7 +229,7 @@ function CardGenerate(props) {
             <Button size="small" color="primary" onClick={onDetailClick.bind(this, item)}>
               查看
             </Button>
-            <Button size="small" color="primary">
+            <Button size="small" color="primary" onClick={onAddCartClick.bind(this, item.id)}>
               加入商品
             </Button>
           </CardActions>
@@ -232,16 +257,20 @@ function fetchPhoto() {
 /**
  * 將需要的資料整理成一綑
  * @param {Object} photoData fetchPhotos 回來的資料 
- * @return {Array<Object>} 整理後的照片資料
+ * @return {Object} 整理後的照片資料
  */
 function formatPhotosData(photoData) {
   const data = [...photoData];
+  const idMap = {};
   const nData = data.map(data => {
     const { id, exif, alt_description, urls: { regular: img }, user: { name } } = data;
+
+    idMap[id] = data;
     return { id, name, img, exif, alt_description }
   });
   console.log('[formatPhotos] ', nData);
-  return nData;
+  console.log('[idMap] ', idMap);
+  return { data: nData, idMapData: idMap };
 }
 
 export default withStyles(styles)(Shop);

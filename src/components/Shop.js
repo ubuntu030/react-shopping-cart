@@ -113,7 +113,7 @@ class Shop extends React.Component {
   // 加入購物車按鈕處理
   handleAddCartClick(itemId) {
     // 避免重複加入，同樣商品
-    if(this.state.cart.includes(itemId)) {
+    if (this.state.cart.includes(itemId)) {
       return;
     }
     this.setState(state => ({
@@ -170,6 +170,7 @@ class Shop extends React.Component {
               {/* TODO: loding 效果 */}
               <CardGenerate
                 products={this.state.products}
+                cart={this.state.cart}
                 onDetailClick={this.handleDetailClick}
                 onAddCartClick={this.handleAddCartClick}
                 classes={classes}
@@ -206,7 +207,8 @@ Shop.propTypes = {
  * @param {Object} props 
  */
 function CardGenerate(props) {
-  const { products, classes, onDetailClick, onAddCartClick } = props;
+  // TODO: 優化: products、cart 共用
+  const { products, cart, classes, onDetailClick, onAddCartClick } = props;
 
   return (
     products.map(item => (
@@ -228,8 +230,8 @@ function CardGenerate(props) {
           <CardActions>
             <Button size="small" color="primary" onClick={onDetailClick.bind(this, item)}>
               查看
-            </Button>
-            <Button size="small" color="primary" onClick={onAddCartClick.bind(this, item.id)}>
+            </Button>true
+            <Button size="small" color="primary" disabled={cart.includes(item.id)} onClick={onAddCartClick.bind(this, item.id)}>
               加入商品
             </Button>
           </CardActions>

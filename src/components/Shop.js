@@ -67,6 +67,9 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing.unit * 6,
   },
+  image: {
+    width: '100%'
+  }
 });
 
 class Shop extends React.Component {
@@ -189,7 +192,9 @@ class Shop extends React.Component {
           open={this.state.open}
           currentItem={this.state.currentItem}
           onCloseEvent={this.handleCloseEvent}
-        />
+        >
+          <img alt={this.state.currentItem.alt_description} src={this.state.currentItem.img} className={classes.image}></img>
+        </FullScreenDialog>
       </React.Fragment>
     )
   }

@@ -15,20 +15,16 @@ const styles = {
   },
   flex: {
     flex: 1,
-  },
-  image: {
-    width: '100%'
   }
 };
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
-// TODO: 設計成 Render Props 使用在"查看全圖"、"購物車清單"
+
 class FullScreenDialog extends React.Component {
   render() {
-    const { classes, currentItem, open = false, onCloseEvent } = this.props;
-    const { alt_description, img } = currentItem;
+    const { classes, open = false, onCloseEvent } = this.props;
     return (
       <Dialog
         fullScreen
@@ -47,7 +43,7 @@ class FullScreenDialog extends React.Component {
           </Toolbar>
         </AppBar>
         <div>
-          <img alt={alt_description} src={img} className={classes.image}></img>
+          {this.props.children}
         </div>
       </Dialog>
     );

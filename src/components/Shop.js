@@ -64,6 +64,9 @@ const styles = theme => ({
   cardContent: {
     flexGrow: 1,
   },
+  pos: {
+    marginBottom: 12,
+  },
   footer: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing.unit * 6,
@@ -244,6 +247,9 @@ function CardGenerate(props) {
           <CardContent className={classes.cardContent}>
             <Typography gutterBottom variant="h5" component="h2">
               {item.name}
+            </Typography>
+            <Typography className={classes.pos} color="textSecondary">
+              ${item.price}
             </Typography>
             <Typography>
               {item.alt_description}

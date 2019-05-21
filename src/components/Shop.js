@@ -288,11 +288,24 @@ function formatPhotosData(photoData) {
   const idMap = {};
   data.forEach(data => {
     const { id, exif, alt_description, urls: { regular: img }, user: { name } } = data;
+    // 加入價格
+    const price = getRandomInt(10, 100);
     // 將資料整理成鍵值對
-    idMap[id] = { id, name, img, exif, alt_description };
+    idMap[id] = { id, name, img, exif, alt_description, price };
   });
   console.log('[formatPhotosData] ', idMap);
   return idMap;
+}
+/**
+ * 在一區間取得隨機數
+ * @param {Number} min 
+ * @param {Number} max
+ * @returns {Number} 
+ */
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 export default withStyles(styles)(Shop);

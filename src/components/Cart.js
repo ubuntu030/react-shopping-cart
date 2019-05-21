@@ -43,7 +43,6 @@ function Cart(props) {
           <TableRow>
             <TableCell>作者</TableCell>
             <TableCell align="right">價格</TableCell>
-
           </TableRow>
         </TableHead>
         <TableBody>
@@ -55,8 +54,7 @@ function Cart(props) {
                   <TableCell component="th" scope="row">
                     {info.name}
                   </TableCell>
-                  <TableCell align="right">{100}</TableCell>
-
+                  <TableCell align="right">${info.price}</TableCell>
                 </TableRow>
               )
             })

@@ -32,7 +32,10 @@ const rows = [
   createData('Cupcake', 305, 3.7, 67, 4.3),
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
-
+// TODO: 加入商品圖片顯示
+// TODO: 總價格計算
+// TODO: 買單
+// TODO: 移除商品
 function Cart(props) {
   const { classes, cart, products } = props;
 

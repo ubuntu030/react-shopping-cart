@@ -34,32 +34,33 @@ const rows = [
 ];
 
 function Cart(props) {
-  const { classes } = props;
+  const { classes, cart, products } = props;
 
   return (
     <Paper className={classes.root}>
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat (g)</TableCell>
-            <TableCell align="right">Carbs (g)</TableCell>
-            <TableCell align="right">Protein (g)</TableCell>
+            <TableCell>作者</TableCell>
+            <TableCell align="right">價格</TableCell>
+
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row => (
-            <TableRow key={row.id}>
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
-            </TableRow>
-          ))}
+          {
+            cart.map(id => {
+              const info = products[id];
+              return (
+                <TableRow key={id}>
+                  <TableCell component="th" scope="row">
+                    {info.name}
+                  </TableCell>
+                  <TableCell align="right">{100}</TableCell>
+
+                </TableRow>
+              )
+            })
+          }
         </TableBody>
       </Table>
     </Paper>

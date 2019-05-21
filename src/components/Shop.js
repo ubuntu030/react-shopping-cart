@@ -209,7 +209,10 @@ class Shop extends React.Component {
           open={this.state.cartOpen}
           onClose={this.handleClose}
         >
-          <Cart />
+          <Cart
+            cart={this.state.cart}
+            products={this.state.products}
+          />
         </FullScreenDialog>
       </React.Fragment>
     )

@@ -10,9 +10,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 
 const styles = {
-  appBar: {
-    position: 'relative',
-  },
   flex: {
     flex: 1,
   }
@@ -23,25 +20,21 @@ function Transition(props) {
 }
 
 class FullScreenDialog extends React.Component {
+  handleClose = () => {
+    // 由外部控制元件開關
+    this.props.onClose();
+  }
+  
   render() {
-    const { classes, open = false, onCloseEvent } = this.props;
+    const { open = false } = this.props;
     return (
       <Dialog
-        fullScreen
+        fullWidth={true}
+        maxWidth="xl"
         open={open}
         onClose={this.handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar className={classes.appBar}>
-          <Toolbar>
-            <IconButton color="inherit" onClick={onCloseEvent} aria-label="Close">
-              <CloseIcon />
-            </IconButton>
-            <Typography variant="h6" color="inherit" className={classes.flex}>
-              Dialog
-              </Typography>
-          </Toolbar>
-        </AppBar>
         <div>
           {this.props.children}
         </div>

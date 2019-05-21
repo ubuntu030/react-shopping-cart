@@ -82,7 +82,7 @@ class Shop extends React.Component {
       currentItem: {}
     }
     this.handleDetailClick = this.handleDetailClick.bind(this);
-    this.handleCloseEvent = this.handleCloseEvent.bind(this);
+    this.handleClose = this.handleClose.bind(this);
     this.handleAddCartClick = this.handleAddCartClick.bind(this);
   }
 
@@ -105,7 +105,7 @@ class Shop extends React.Component {
     })
   }
   // 關閉 Dialog 事件
-  handleCloseEvent() {
+  handleClose() {
     this.setState({
       open: false
     });
@@ -191,7 +191,7 @@ class Shop extends React.Component {
         <FullScreenDialog
           open={this.state.open}
           currentItem={this.state.currentItem}
-          onCloseEvent={this.handleCloseEvent}
+          onClose={this.handleClose}
         >
           <img alt={this.state.currentItem.alt_description} src={this.state.currentItem.img} className={classes.image}></img>
         </FullScreenDialog>

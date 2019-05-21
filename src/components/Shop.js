@@ -17,6 +17,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 import Unsplash from './Unsplash';
 import FullScreenDialog from './FullScreenDialog';
+import Cart from './Cart';
 
 const styles = theme => ({
   appBar: {
@@ -79,11 +80,13 @@ class Shop extends React.Component {
       cart: [],
       products: [],
       open: false,
+      cartOpen: false,
       currentItem: {}
     }
     this.handleDetailClick = this.handleDetailClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleAddCartClick = this.handleAddCartClick.bind(this);
+    this.handleOpenCart = this.handleOpenCart.bind(this);
   }
 
   componentDidMount() {
@@ -107,7 +110,8 @@ class Shop extends React.Component {
   // 關閉 Dialog 事件
   handleClose() {
     this.setState({
-      open: false
+      open: false,
+      cartOpen: false
     });
   }
   // 加入購物車按鈕處理
@@ -120,6 +124,12 @@ class Shop extends React.Component {
       cart: state.cart.concat(itemId)
     }));
   }
+  // 開啟購物車
+  handleOpenCart() {
+    this.setState({
+      cartOpen: true
+    });
+  }
 
   render() {
     const { classes } = this.props;
@@ -131,7 +141,7 @@ class Shop extends React.Component {
             <Typography variant="h6" color="inherit" noWrap className={classes.flexGrow}>
               Shopping Cart
             </Typography>
-            <IconButton color="inherit">
+            <IconButton color="inherit" onClick={this.handleOpenCart}>
               <Badge badgeContent={this.state.cart.length} color="secondary">
                 <ShoppingCartIcon />
               </Badge>
@@ -194,6 +204,12 @@ class Shop extends React.Component {
           onClose={this.handleClose}
         >
           <img alt={this.state.currentItem.alt_description} src={this.state.currentItem.img} className={classes.image}></img>
+        </FullScreenDialog>
+        <FullScreenDialog
+          open={this.state.cartOpen}
+          onClose={this.handleClose}
+        >
+          <Cart />
         </FullScreenDialog>
       </React.Fragment>
     )
